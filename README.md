@@ -2,8 +2,29 @@
 
 # npm-proxy
 
-[[_TOC_]]
-
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+       <ul>
+        <li><a href="#release-notes">Release Notes</a></li>
+        <li><a href="#contributions-and-acknowledgements">Contributions and Acknowledgements</a></li>
+      </ul>
+	</li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#how-the-service-works">How The Service Works</a></li>
+        <li><a href="#service-configuration">Service Configuration</a></li>
+      </ul>
+    </li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#additional-notes">Additional Notes and Disclaimer from gematik GmbH</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ol>
+</details>
 
 ## About The Project
 
