@@ -28,9 +28,9 @@
 
 ## About The Project
 
-The National Terminology Server (NTS) provides an NPM-based API for downloading terminology packages.
+The **Zentraler Terminologieserver (ZTS)** provides an NPM-based API for downloading terminology packages.
 This API is currently implemented via GitLab and can therefore be integrated very easily into terminology projects.
-However, there are functional limitations regarding the implementation of use cases that are relevant for the NTS:
+However, there are functional limitations regarding the implementation of use cases that are relevant for the ZTS:
 
 Within the terminology server, content is provided for which users must accept different download conditions.
 This includes, for example, ICD-10-GM and OPS. Access and permission control within a GitLab project, however, applies to
