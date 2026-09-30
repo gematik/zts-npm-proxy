@@ -2,6 +2,18 @@
 
 # Release Notes npm-proxy
 
+## Release 1.9.4 (2026-09)
+
+### changed
+
+- Upgraded Java 21 -> 25
+
+## Release 1.9.3 (2026-08)
+
+### changed
+
+- Fixed Table of Contents in README.md
+
 ## Release 1.9.2 (2026-08)
 
 ### changed

@@ -5,11 +5,11 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.1.0</version>
+        <version>4.1.1</version>
     </parent>
     <groupId>de.gematik.zts</groupId>
     <artifactId>npmproxy</artifactId>
-    <version>1.9.2-b78</version>
+    <version>1.9.3-b92</version>
     <name>npmproxy</name>
     <description>NPM Proxy für die Bereitstellung von BfArM FHIR-Packages, die Downloadbedingungen unterliegen
     </description>
@@ -26,38 +26,41 @@
     </developers>
 
     <properties>
-        <java.version>21</java.version>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <maven.surefire.version>3.5.6</maven.surefire.version>
+        <java.version>25</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.surefire.version>3.6.0</maven.surefire.version>
         <maven.failsafe.plugin.version>${maven.surefire.version}</maven.failsafe.plugin.version>
         <maven.notice.plugin.version>2.0.0</maven.notice.plugin.version>
         <!-- Dependencies -->
         <jacoco.version>0.8.15</jacoco.version>
         <lucene.version>10.5.1</lucene.version>
-        <logback.version>1.6.2</logback.version>
-        <hapi.fhir.version>8.10.1</hapi.fhir.version>
+        <logback.version>1.6.4</logback.version>
+        <hapi.fhir.version>8.12.1</hapi.fhir.version>
         <jjwt.version>0.13.0</jjwt.version>
         <reactor.netty.version>1.3.1</reactor.netty.version>
-        <netty.version>4.2.17.Final</netty.version>
-        <mockito.version>5.23.0</mockito.version>
-        <mockwebserver.version>5.4.0</mockwebserver.version>
+        <netty.version>4.2.18.Final</netty.version>
+        <mockito.version>5.24.0</mockito.version>
+        <mockwebserver.version>5.5.0</mockwebserver.version>
         <assertj.version>3.27.7</assertj.version>
-        <google-cloud-artifact-registry.version>1.94.0</google-cloud-artifact-registry.version>
-        <google-auth-library-oauth2-http.version>1.50.0</google-auth-library-oauth2-http.version>
-        <protobuf-java-util.version>4.35.1</protobuf-java-util.version>
+        <google-cloud-artifact-registry.version>1.97.0</google-cloud-artifact-registry.version>
+        <google-auth-library-oauth2-http.version>1.53.0</google-auth-library-oauth2-http.version>
+        <protobuf-java-util.version>4.36.2</protobuf-java-util.version>
         <awaitility.version>4.3.0</awaitility.version>
         <rome.version>2.1.0</rome.version>
         <logstash-logback-encoder.version>9.0</logstash-logback-encoder.version>
         <janino.version>3.1.12</janino.version>
-        <lombok.version>1.18.46</lombok.version>
-        <reactor-test.version>3.8.6</reactor-test.version>
+        <lombok.version>1.18.48</lombok.version>
+        <reactor-test.version>3.8.7</reactor-test.version>
         <semver4j.version>6.0.0</semver4j.version>
         <commons-compress.version>1.28.0</commons-compress.version>
-        <springdoc-openapi-starter-webflux-ui.version>3.1.0</springdoc-openapi-starter-webflux-ui.version>
+        <springdoc-openapi-starter-webflux-ui.version>3.1.1</springdoc-openapi-starter-webflux-ui.version>
         <commons-lang3.version>3.20.0</commons-lang3.version>
         <commons-text.version>1.15.0</commons-text.version>
         <icu4j.version>78.3</icu4j.version>
+        <tools-jackson-core.version>3.2.3</tools-jackson-core.version>
+        <jackson.version>2.22.3</jackson.version>
+        <jackson.annotations.version>2.22</jackson.annotations.version>
 
         <!-- SonarQube Configuration-->
         <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
@@ -95,6 +98,35 @@
                 <artifactId>commons-text</artifactId>
                 <version>${commons-text.version}</version>
             </dependency>
+
+            <!-- CVE-2026-68498 (transitive dependency)-->
+            <dependency>
+                <groupId>tools.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${tools-jackson-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>tools.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${tools-jackson-core.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson.annotations.version}</version>
+            </dependency>
+
             <!-- CVE FIXES END -->
 
         </dependencies>
@@ -287,6 +319,23 @@
                     <artifactId>jacoco-maven-plugin</artifactId>
                     <version>${jacoco.version}</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${maven.compiler.source}</source>
+                        <target>${maven.compiler.target}</target>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+
             </plugins>
 
         </pluginManagement>
