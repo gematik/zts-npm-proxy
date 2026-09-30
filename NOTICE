@@ -35,6 +35,9 @@ This project includes:
   Awaitility under Apache 2.0
   Byte Buddy (without dependencies) under Apache License, Version 2.0
   Byte Buddy agent under Apache License, Version 2.0
+  CEL Java Common under Apache License, Version 2.0
+  CEL Java Protobuf adapter under Apache License, Version 2.0
+  CEL Java Runtime under Apache License, Version 2.0
   ClassMate under Apache License, Version 2.0
   commons-compiler under BSD-3-Clause
   Core functionality for the Reactor Netty library under The Apache Software License, Version 2.0
@@ -210,6 +213,7 @@ This project includes:
   swagger-core-jakarta under Apache License 2.0
   swagger-models-jakarta under Apache License 2.0
   ThreeTen backport under BSD-3-Clause
+  ThreeTen-Extra under BSD 3-clause
   tomcat-embed-el under Apache License, Version 2.0
   webjars-locator-lite under MIT
   XML Resolver under Apache License version 2.0
