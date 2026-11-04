@@ -102,6 +102,8 @@ class FhirPackageRepositoryUpdaterTest {
     mockWebServer.start();
 
     properties = Mockito.mock(NpmProxyConfiguration.class);
+    // feature flag for WIF
+    when(properties.isUseWif()).thenReturn(false);
     when(properties.getMonitoredPackages()).thenReturn(Set.of("bfarm.terminologien.test"));
     when(properties.getBackendMode()).thenReturn(NpmProxyConstants.BACKEND_MODE_BASICAUTH);
     when(properties.getUsername()).thenReturn("testuser");

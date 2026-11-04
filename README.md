@@ -185,15 +185,21 @@ environment variables:
 * **proxy.target-url / PROXY_TARGET_URL** - URL of the NPM registry (
   e.g. 'https://gitlab.fokus.fraunhofer.de/api/v4/projects/1234/packages/npm') from which the monitored NPM packages are
   loaded. For the NTS this will be the NPM registry built into GitLab.
+* **feature.flag.use-wif** - Enables authentication via Workload Identity Federation (WIF) and Google Application Default 
+  Credentials (ADC). Default: `false`.
 * **proxy.backend-mode / PROXY_BACKEND_MODE** - Defines the authentication mechanism to use towards the NPM backend.
-  Allowed values are: 'gitlab' and 'basicauth'. For 'gitlab' mode a corresponding GitLab token must be defined. For
-  'basicauth' mode the username and password properties must be set.
+  Allowed values are: 'gitlab' and 'basicauth'. For 'gitlab' mode a corresponding GitLab token must be defined. 
+  For 'basicauth' mode:
+  * When `feature.flag.use-wif=false`, the username and password properties must be set.
+  * When `feature.flag.use-wif=true`, no configured credentials are required. The service retrieves short-lived access tokens 
+    via Google Application Default Credentials (provided through Workload Identity Federation) and sends them as 
+    BasicAuth header.
 * **proxy.gitlab-token / PROXY_GITLAB_TOKEN** - GitLab token for authenticating the service against the GitLab NPM
   registry. Note: the value is only relevant for backend mode 'gitlab'.
 * **proxy.username / PROXY_USERNAME** - Username for authenticating the service against a BasicAuth-based NPM registry.
-  Note: the value is only relevant for backend mode 'basicauth'
+    Note: the value is only relevant for backend mode 'basicauth' and `feature.flag.use-wif=false`.
 * **proxy.password / PROXY_PASSWORD** - Password for authenticating the service against a BasicAuth-based NPM registry.
-  Note: the value is only relevant for backend mode 'basicauth'
+  Note: the value is only relevant for backend mode 'basicauth' and `feature.flag.use-wif=false`.
 * **proxy.update-interval-in-ms / PROXY_UPDATE_INTERVAL_IN_MS** - Interval in milliseconds at which the monitored NPM
   packages are loaded from the backend NPM registry. This is a period
 

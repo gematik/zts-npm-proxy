@@ -60,6 +60,9 @@ class ArtifactRegistryConnectorTest {
 
   @BeforeEach
   void setUp() {
+    // Provide feature flag behavior
+    lenient().when(mockConfig.isUseWif()).thenReturn(false);
+
     // Provide default behavior for the mocked config
     lenient().when(mockConfig.getPassword()).thenReturn("somekey");
     lenient()
