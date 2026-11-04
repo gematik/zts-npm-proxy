@@ -84,6 +84,8 @@ class FhirPackageRepositoryUpdaterTest {
     mockWebServer = new MockWebServer();
     mockWebServer.start(); // Start the MockWebServer
     MockitoAnnotations.openMocks(this);
+    // feature flag for WIF
+    when(properties.isUseWif()).thenReturn(false);
   }
 
   @AfterEach

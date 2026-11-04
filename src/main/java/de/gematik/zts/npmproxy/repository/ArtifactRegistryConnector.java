@@ -82,19 +82,31 @@ public class ArtifactRegistryConnector {
   @PostConstruct
   public void init() {
     try {
-      // Check if the Google Cloud service account key is set
-      if (StringUtils.isEmpty(properties.getPassword())) {
-        log.error("Google Cloud Service Account Key is not set or empty.");
-        return;
+      GoogleCredentials credentials;
+
+      // Feature flag for WIF usage
+      if (properties.isUseWif()) {
+        credentials =
+                GoogleCredentials.getApplicationDefault()
+                        .createScoped(List.of(GCLOUD_CREDENTIAL_SCOPE));
+      }else{
+
+        // Check if the Google Cloud service account key is set
+        if (StringUtils.isEmpty(properties.getPassword())) {
+          log.error("Google Cloud Service Account Key is not set or empty.");
+          return;
+        }
+
+        // decode the service account key from the properties
+        byte[] decodedKey =
+                Base64.getDecoder().decode(properties.getPassword().getBytes(StandardCharsets.UTF_8));
+
+        credentials =
+              GoogleCredentials.fromStream(new ByteArrayInputStream(decodedKey))
+                .createScoped(List.of(GCLOUD_CREDENTIAL_SCOPE));
+
       }
 
-      // decode the service account key from the properties
-      byte[] decodedKey =
-          Base64.getDecoder().decode(properties.getPassword().getBytes(StandardCharsets.UTF_8));
-
-      GoogleCredentials credentials =
-          GoogleCredentials.fromStream(new ByteArrayInputStream(decodedKey))
-              .createScoped(List.of(GCLOUD_CREDENTIAL_SCOPE));
 
       // Create a credentials provider
       FixedCredentialsProvider credentialsProvider = FixedCredentialsProvider.create(credentials);
@@ -136,6 +148,7 @@ public class ArtifactRegistryConnector {
     } catch (IOException e) {
       log.error("Error while initializing ArtifactRegistryConnector: {}", e.getMessage(), e);
     } catch (IllegalArgumentException e) {
+      // Can be deleted once WIF replaces the old static keys
       log.error("Invalid Google Cloud Service Account Key format: {}", e.getMessage(), e);
     } catch (URISyntaxException e) {
       log.error("Error parsing the target URL: {}", e.getMessage(), e);

@@ -23,6 +23,7 @@ package de.gematik.zts.npmproxy.repository;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.auth.oauth2.GoogleCredentials;
 import de.gematik.zts.npmproxy.NpmProxyConfiguration;
 import de.gematik.zts.npmproxy.NpmProxyConstants;
 import de.gematik.zts.npmproxy.exceptions.NpmProxyException;
@@ -30,12 +31,15 @@ import de.gematik.zts.npmproxy.exceptions.RepositoryUpdaterException;
 import de.gematik.zts.npmproxy.model.FhirPackageArtifactRegistryAnnotations;
 import de.gematik.zts.npmproxy.model.FhirPackageInfo;
 import de.gematik.zts.npmproxy.model.FhirPackageVersionInfo;
+
+import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.List;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,10 +59,14 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class FhirPackageRepositoryUpdater {
 
+  private static final String GCLOUD_CREDENTIAL_SCOPE =
+          "https://www.googleapis.com/auth/cloud-platform";
+
   private final NpmProxyConfiguration properties;
   private final LuceneBackedPackageRepository repository;
   private final ArtifactRegistryConnector artifactRegistryConnector;
   private Set<String> monitoredPackages;
+  private GoogleCredentials credentials;
 
   public FhirPackageRepositoryUpdater(
       NpmProxyConfiguration properties,
@@ -280,11 +288,35 @@ public class FhirPackageRepositoryUpdater {
    * @return Wert für Authorization Header
    */
   private String generateAuthorizationHeaderValueForBasicAuth() {
+
+    if (properties.isUseWif()) {
+      try {
+        if (credentials == null) {
+          credentials =
+                  GoogleCredentials.getApplicationDefault()
+                          .createScoped(List.of(GCLOUD_CREDENTIAL_SCOPE));
+        }
+
+        // da wir hier keinen Google Client nutzen wie in ArtifactRegistryConnector, und das token selber auslesen,
+        // müssen wir es eventuell refreshen
+        credentials.refreshIfExpired();
+
+        return "Basic "
+                + Base64.getEncoder()
+                .encodeToString(
+                        ("oauth2accesstoken:" + credentials.getAccessToken().getTokenValue())
+                                .getBytes(StandardCharsets.UTF_8));
+
+      } catch (IOException e) {
+        throw new NpmProxyException("Credentials konnten nicht geladen werden: " + e.getMessage());
+      }
+    }
+
     return "Basic "
-        + Base64.getEncoder()
+            + Base64.getEncoder()
             .encodeToString(
-                (properties.getUsername() + ":" + properties.getPassword())
-                    .getBytes(StandardCharsets.UTF_8));
+                    (properties.getUsername() + ":" + properties.getPassword())
+                            .getBytes(StandardCharsets.UTF_8));
   }
 
   /**

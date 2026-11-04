@@ -88,6 +88,11 @@ public class NpmProxyConfiguration {
   @Value("${proxy.gitlab-token}")
   private String gitlabToken;
 
+  // Feature-Flag für die Authentifizierung des Proxys gegenüber einer basicauth NPM-Registry
+  // (im Fall von WIF, können username und password hier und aus den application.properties gelöscht werden)
+  @Value("${feature.flag.use-wif}")
+  private boolean useWif;
+
   // Username für die Authentifizierung des Proxys gegenüber einer basicauth NPM-Registry
   @Value("${proxy.username}")
   private String username;

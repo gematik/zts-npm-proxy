@@ -2,11 +2,27 @@
 
 # Release Notes npm-proxy
 
+## Release 1.10.1 (2026-11)
+
+### changed
+
+- Updated dependencies
+
+## Release 1.10.0 (2026-10)
+
+### changed
+
+- Added a feature flag to enable Artifact Registry authentication via Workload Identity Federation (WIF) using Application Default Credentials (ADC)
+
 ## Release 1.9.4 (2026-09)
 
 ### changed
 
 - Upgraded Java 21 -> 25
+
+### fixed
+
+- Fixed surefire/failsafe configuration to remove mockito warning
 
 ## Release 1.9.3 (2026-08)
 
