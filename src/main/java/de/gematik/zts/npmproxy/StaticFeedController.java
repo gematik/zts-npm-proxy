@@ -89,7 +89,7 @@ public class StaticFeedController {
 
     return Mono.just(
         ResponseEntity.ok()
-            .cacheControl(CacheControl.maxAge(60, TimeUnit.MINUTES).cachePublic().cachePrivate())
+            .cacheControl(CacheControl.maxAge(60, TimeUnit.MINUTES).cachePublic())
             .body(feedGenerator.getFeedContent()));
   }
 }
