@@ -1,12 +1,19 @@
 <img align="right" width="250" height="47" src="https://raw.githubusercontent.com/gematik/gematik.github.io/master/Gematik_Logo_Flag_With_Background.png" /> <br />     
 
-# Release Notes npm-proxy
+# Release Notes
+
+## Release 1.11.0 (2026-11)
+
+### changed
+
+- Updated dependencies and docker image
+- Feed Cache set to public
 
 ## Release 1.10.1 (2026-11)
 
 ### changed
 
-- Updated dependencies
+- Updated dependencies and docker image
 
 ## Release 1.10.0 (2026-10)
 
